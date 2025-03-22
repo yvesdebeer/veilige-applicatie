@@ -16,16 +16,21 @@ jobs:
     - name: Run Bandit (Static Code Analysis)
       run: bandit -r ./app
 
-    - name: Install Trivy
-      run: |
-        sudo apt update
-        sudo apt install -y snapd
-        sudo snap install trivy
-
-    - name: Scan source code for vulnerabilities
-      run: trivy fs --exit-code 1 --severity HIGH,CRITICAL ./app
-
-    - name: Scan container image for vulnerabilities
+    - name: Scan repository for vulnerabilities
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'fs'
+        severity: 'HIGH,CRITICAL'
+        exit-code: '1'
+        
+    - name: Build container image
       run: |
         docker build -t secure-app ./app
-        trivy image --exit-code 1 --severity HIGH,CRITICAL secure-app
+        
+    - name: Scan container image
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'image'
+        image-ref: 'secure-app'
+        severity: 'HIGH,CRITICAL'
+        exit-code: '1'
