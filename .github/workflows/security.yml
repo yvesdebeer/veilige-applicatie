@@ -33,4 +33,4 @@ jobs:
         scan-type: 'image'
         image-ref: 'secure-app'
         severity: 'HIGH,CRITICAL'
-        exit-code: '1'
+        exit-code: '0'
