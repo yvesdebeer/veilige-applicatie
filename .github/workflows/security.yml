@@ -1,0 +1,22 @@
+name: Security Scan & Test
+
+on: [push, pull_request]
+
+jobs:
+  security:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Install dependencies
+      run: pip install flask bandit
+
+    - name: Run Bandit (Static Code Analysis)
+      run: bandit -r ./app
+
+    - name: Run Trivy (Container Vulnerability Scan)
+      run: |
+        docker build -t secure-app ./app
+        trivy image secure-app
