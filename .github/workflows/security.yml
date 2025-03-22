@@ -19,7 +19,8 @@ jobs:
     - name: Install Trivy
       run: |
         sudo apt update
-        sudo apt install -y trivy
+        sudo apt install -y snapd
+        sudo snap install trivy
 
     - name: Scan source code for vulnerabilities
       run: trivy fs --exit-code 1 --severity HIGH,CRITICAL ./app
