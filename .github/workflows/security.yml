@@ -9,7 +9,16 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+      
+    - name: Update en upgrade OS-packages
+      run: sudo apt-get update && sudo apt-get upgrade -y
 
+    - name: Installeer Trivy (indien niet standaard aanwezig)
+      run: |
+        sudo apt-get install -y wget
+        wget https://github.com/aquasecurity/trivy/releases/latest/download/trivy_amd64.deb
+        sudo dpkg -i trivy_amd64.deb
+        
     - name: Install dependencies
       run: pip install flask bandit
 
