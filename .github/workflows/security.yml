@@ -8,7 +8,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Install dependencies
       run: pip install flask bandit
@@ -25,7 +25,7 @@ jobs:
         
     - name: Build container image
       run: |
-        docker build -t secure-app ./app
+        docker build -t secure-app:latest ./app
         
     - name: Scan container image
       uses: aquasecurity/trivy-action@master
